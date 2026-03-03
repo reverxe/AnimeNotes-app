@@ -48,8 +48,11 @@ export async function GET(request: NextRequest) {
       return createErrorResponse('Missing authorization code', 400)
     }
 
-    // Exchange code for tokens
-    const tokens = await exchangeCodeForTokens(code)
+    // Get PKCE code_verifier from cookie
+    const codeVerifier = request.cookies.get('pkce_verifier')?.value
+
+    // Exchange code for tokens with PKCE
+    const tokens = await exchangeCodeForTokens(code, codeVerifier)
 
     // Fetch current user info from MyAnimeList
     const userResponse = await axios.get(`${MAL_API_BASE_URL}/users/@me`, {
