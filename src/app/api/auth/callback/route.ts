@@ -34,6 +34,14 @@ export async function GET(request: NextRequest) {
     const error = searchParams.get('error')
     const state = searchParams.get('state')
 
+    // DEBUG: log raw callback input so we can inspect it when issues occur
+    console.log('Callback invoked with params', {
+      code,
+      state,
+      error,
+      error_description: searchParams.get('error_description')
+    })
+
     // Check for OAuth errors
     if (error) {
       const errorDescription = searchParams.get('error_description') || error
@@ -45,14 +53,23 @@ export async function GET(request: NextRequest) {
 
     // Validate required parameters
     if (!code) {
+      console.error('Callback missing code parameter')
       return createErrorResponse('Missing authorization code', 400)
     }
 
     // Get PKCE code_verifier from cookie
     const codeVerifier = request.cookies.get('pkce_verifier')?.value
+    console.log('PKCE verifier from cookie', { codeVerifier })
 
     // Exchange code for tokens with PKCE
-    const tokens = await exchangeCodeForTokens(code, codeVerifier)
+    let tokens
+    try {
+      tokens = await exchangeCodeForTokens(code, codeVerifier)
+    } catch (ex) {
+      console.error('Token exchange failed', ex)
+      // forward error to user with some context to help debugging
+      return createErrorResponse('OAuth token exchange failed', 400)
+    }
 
     // Fetch current user info from MyAnimeList
     const userResponse = await axios.get(`${MAL_API_BASE_URL}/users/@me`, {

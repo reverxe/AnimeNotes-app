@@ -1,4 +1,4 @@
-# Setup Guide - AnimeNotes
+# Setup Guide - MyAnimeNote
 
 ## 🔐 Step 1: MyAnimeList OAuth2 Setup
 
@@ -7,7 +7,7 @@
 1. Go to https://myanimelist.net/apiconfig
 2. Click **"Create ID"** to create a new API application
 3. Fill in the form:
-   - **App Name**: AnimeNotes
+   - **App Name**: MyAnimeNote
    - **App Type**: Web (not mobile)
    - **Redirect URI**: `http://localhost:3000/api/auth/callback`
    - **Display Form**: No
@@ -107,7 +107,7 @@ Visit `http://localhost:3000`
 
 ```bash
 git add .
-git commit -m "Initial commit: AnimeNotes app"
+git commit -m "Initial commit: MyAnimeNote app"
 git push origin main
 ```
 

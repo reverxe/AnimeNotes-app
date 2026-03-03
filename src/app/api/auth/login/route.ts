@@ -12,13 +12,30 @@ export async function GET(request: NextRequest) {
       return createErrorResponse('Too many login attempts. Please try again later.', 429)
     }
 
-    const { authUrl, codeVerifier } = getAuthorizationUrlWithPKCE()
+    // construct a redirect URI using the host header so the port matches whatever
+    // the dev server is currently listening on. this prevents a mismatch between
+    // the registered URI and the one we send to MAL.
+    const host = request.headers.get('host')
+    const protocol = request.headers.get('x-forwarded-proto') || 'http'
+    const redirectUri = `${protocol}://${host}/api/auth/callback`
 
-    // DEBUG: log authUrl for troubleshooting
+    const { authUrl, codeVerifier, codeChallenge, state } = getAuthorizationUrlWithPKCE(redirectUri)
+
+    // DEBUG: log detailed PKCE info so we can inspect what is being sent to MAL
+    console.log('Using redirect URI:', redirectUri)
     console.log('Generated authUrl:', authUrl)
+    console.log('PKCE state / challenge:', { state, codeChallenge })
     
-    // Create response and set code_verifier in cookie for later use
-    const response = NextResponse.json({ success: true, authUrl })
+    // redirect the browser immediately
+    const response = NextResponse.redirect(authUrl)
+    response.cookies.set('pkce_verifier', codeVerifier, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 600 // 10 minutes
+    })
+
+    return response
     response.cookies.set('pkce_verifier', codeVerifier, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

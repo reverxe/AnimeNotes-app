@@ -11,7 +11,7 @@ export default function AuthErrorPage() {
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
         <div className="max-w-6xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-mal-primary">AnimeNotes</h1>
+          <h1 className="text-2xl font-bold text-mal-primary">MyAnimeNote</h1>
         </div>
       </nav>
 
@@ -23,7 +23,7 @@ export default function AuthErrorPage() {
             href="/"
             className="inline-block px-6 py-2 bg-mal-primary text-white rounded-lg hover:bg-mal-secondary transition"
           >
-            Back to Home
+            Back to MyAnimeNote
           </Link>
         </div>
       </div>

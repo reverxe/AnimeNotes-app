@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer components {
+  /* button styles updated to match the crimson/brand palette */
   .btn-primary {
     @apply px-4 py-2 bg-mal-primary text-white rounded-lg hover:bg-mal-secondary transition disabled:opacity-50;
   }

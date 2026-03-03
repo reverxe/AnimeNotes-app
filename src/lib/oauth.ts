@@ -36,23 +36,29 @@ function generateCodeChallenge(codeVerifier: string): string {
 }
 
 // Generate authorization URL for login with PKCE
-export function getAuthorizationUrlWithPKCE(): { authUrl: string; codeVerifier: string } {
+export function getAuthorizationUrlWithPKCE(overrideRedirectUri?: string): { authUrl: string; codeVerifier: string; codeChallenge: string; state: string } {
   const codeVerifier = generateCodeVerifier()
   const codeChallenge = generateCodeChallenge(codeVerifier)
   const state = generateRandomString(16)
 
+  // allow caller to override the redirect URI (useful during dev when port may vary)
+  const redirectUri = overrideRedirectUri || MAL_REDIRECT_URI
   const params = new URLSearchParams({
     client_id: MAL_CLIENT_ID,
     response_type: 'code',
-    redirect_uri: MAL_REDIRECT_URI,
-    scope: 'read write',
+    redirect_uri: redirectUri,
     state,
     code_challenge: codeChallenge,
     code_challenge_method: 'S256'
   })
 
-  const authUrl = `${MAL_OAUTH_AUTHORIZE_URL}?${params.toString()}`
-  return { authUrl, codeVerifier }
+  // URLSearchParams encodes spaces as '+', but MAL seems finicky; use '%20' to be safe
+  params.set('scope', 'read write')
+  let authUrl = `${MAL_OAUTH_AUTHORIZE_URL}?${params.toString()}`
+  // replace any pluses in the query with percent-20 (especially in scope)
+  authUrl = authUrl.replace(/\+/g, '%20')
+
+  return { authUrl, codeVerifier, codeChallenge, state }
 }
 
 // Legacy function for backwards compatibility

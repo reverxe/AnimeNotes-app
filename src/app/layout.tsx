@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'AnimeNotes - Track Your Anime with Personal Notes',
+  title: 'MyAnimeNote - Track Your Anime with Personal Notes',
   description: 'Connect your MyAnimeList account and take personalized episode notes',
 }
 

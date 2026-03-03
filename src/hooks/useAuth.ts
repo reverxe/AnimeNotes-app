@@ -46,18 +46,11 @@ export function useAuth(): UseAuthResult {
   }, [fetchProfile])
 
   const login = useCallback(async () => {
-    try {
-      const response = await fetch('/api/auth/login')
-      const data = await response.json()
-
-      if (data.success && data.authUrl) {
-        window.location.href = data.authUrl
-      } else {
-        setError('Failed to initiate login')
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed')
-    }
+    // simply navigate to the login endpoint; the server will issue a
+    // 307 redirect to the MyAnimeList authorization URL and the browser
+    // will follow it automatically. this avoids any fetch-related
+    // issues with cross-origin redirect URLs.
+    window.location.href = '/api/auth/login'
   }, [])
 
   const logout = useCallback(async () => {

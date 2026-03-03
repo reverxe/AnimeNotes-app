@@ -1,4 +1,4 @@
-# API Documentation - AnimeNotes
+# API Documentation - MyAnimeNote
 
 ## Overview
 

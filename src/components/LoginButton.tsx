@@ -26,11 +26,19 @@ export default function LoginButton() {
   }
 
   return (
-    <button
-      onClick={login}
-      className="px-4 py-2 text-sm font-medium text-white bg-mal-primary rounded-lg hover:bg-mal-secondary transition"
-    >
-      Login with MyAnimeList
-    </button>
+    <div className="flex items-center gap-4">
+      <button
+        onClick={login}
+        className="px-4 py-2 text-sm font-medium text-white bg-mal-primary rounded-lg hover:bg-mal-secondary transition"
+      >
+        Login with MyAnimeList
+      </button>
+      <a
+        href="/import"
+        className="px-4 py-2 text-sm font-medium text-mal-primary bg-white rounded-lg hover:bg-gray-100 transition"
+      >
+        Import CSV
+      </a>
+    </div>
   )
 }

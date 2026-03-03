@@ -9,8 +9,9 @@ module.exports = {
     extend: {
       colors: {
         mal: {
-          primary: '#2E51B6',
-          secondary: '#283F8D'
+          // switched from MAL blue to a warm crimson palette for the new MyAnimeNote branding
+          primary: '#DC143C',   // crimson
+          secondary: '#A50E2E'  // deeper red for hover/gradient
         }
       }
     },

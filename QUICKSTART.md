@@ -1,4 +1,4 @@
-# ⚡ Quick Start - AnimeNotes
+# ⚡ Quick Start - MyAnimeNote
 
 ## 🚀 Get Running in 10 Minutes
 
@@ -7,7 +7,9 @@
 1. Visit: https://myanimelist.net/apiconfig
 2. Click: "Create ID"
 3. Fill Form:
-   - App Name: AnimeNotes
+   - App Name: MyAnimeNote
+
+You can either use OAuth or manually import a CSV from MyAnimeList via the `/import` page.
    - Type: Web
    - Redirect: http://localhost:3000/api/auth/callback
 4. Save: Client ID & Secret

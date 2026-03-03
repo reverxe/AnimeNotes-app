@@ -79,6 +79,36 @@ export async function updateUserTokens(
 }
 
 /**
+ * Create a temporary guest user if no MyAnimeList credentials are available
+ */
+export async function createGuestUser(
+  malUsername: string
+): Promise<UserProfile> {
+  // use negative timestamp to guarantee unique mal_user_id
+  const malUserId = -Date.now()
+  const now = new Date().toISOString()
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .insert({
+      mal_user_id: malUserId,
+      mal_username: malUsername || `guest_${Math.floor(Math.random() * 10000)}`,
+      email: null,
+      access_token: '',
+      refresh_token: '',
+      token_expires_at: now,
+      last_synced_at: now
+    })
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to create guest user: ${error.message}`)
+  }
+
+  return data
+}
+
+/*
  * Save anime list items for user
  */
 export async function saveAnimeList(
